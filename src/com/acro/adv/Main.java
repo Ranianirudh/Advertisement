@@ -18,12 +18,14 @@ public class Main {
             //AdvertisementRequest advertisementRequest = test.createAdvertisementRequest();
             //test.advertisementController.saveAdvertisement(advertisementRequest);
 
-            AdvertisementRequest advertisementRequest= new AdvertisementRequest();
-            advertisementRequest.setAdvId(5L);
-            advertisementRequest.setCompanyId(1L);
-            AdvertisementResponse advertisementById = test.advertisementController.getAdvertisementById(advertisementRequest);
+            // AdvertisementRequest advertisementRequest= new AdvertisementRequest();
+          //  advertisementRequest.setAdvId(5L);
+           // advertisementRequest.setCompanyId(1L);
+           // AdvertisementResponse advertisementById = test.advertisementController.getAdvertisementDetails(advertisementRequest);
+            //AdvertisementResponse advertisementById1 = test.advertisementController.getAdvertisementById(5L);
+           List<AdvertisementResponse> advertisementResponses=test.advertisementController.getAllAdvertisementByCompanyId(1L);
 
-            System.out.println(advertisementById);
+            System.out.println(advertisementResponses);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
