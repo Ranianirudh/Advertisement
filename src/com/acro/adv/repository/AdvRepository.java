@@ -12,4 +12,7 @@ public interface AdvRepository {
 
     Advertisement getAdvertisementById(Long advId, Long companyId);
     List<Content> getContentByAdvertisementId(Long avdId, Long companyId);
+
+    List<Advertisement> getAdvertisementByCompanyId(Long companyId);
+
 }

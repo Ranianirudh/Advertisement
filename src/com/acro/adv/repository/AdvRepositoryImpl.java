@@ -74,10 +74,15 @@ public class AdvRepositoryImpl implements AdvRepository {
     public Advertisement getAdvertisementById(Long advId, Long companyId) {
         Connection connection = dbConnection.getConnection();
         try {
-            String mysqlSelect = "select * from advertisement where adv_id=? and company_id=?;";
+            String mysqlSelect = "select * from advertisement where adv_id=? ;";
+            if(companyId!=null && companyId>0) {
+                mysqlSelect = mysqlSelect + " And company_id=?";
+            }
             PreparedStatement pst = connection.prepareStatement(mysqlSelect);
             pst.setLong(1, advId);
-            pst.setLong(2, companyId);
+            if(companyId!=null && companyId>0) {
+                pst.setLong(2, companyId);
+            }
             ResultSet resultSet = pst.executeQuery();
             while (resultSet.next()) {
                 Advertisement advertisement = new Advertisement();
@@ -102,10 +107,15 @@ public class AdvRepositoryImpl implements AdvRepository {
         Connection connection = dbConnection.getConnection();
         List<Content> contents=new ArrayList<>();
         try {
-            String mysqlSelect = "select * from content where adv_id=? AND company_id=?";
+            String mysqlSelect = "select * from content where adv_id=? ";
+            if(companyId!=null && companyId>0){
+                mysqlSelect= mysqlSelect+ " And company_id=?";
+            }
             PreparedStatement pst = connection.prepareStatement(mysqlSelect);
             pst.setLong(1, avdId);
-            pst.setLong(2, companyId);
+            if(companyId!=null && companyId>0) {
+                pst.setLong(2, companyId);
+            }
             ResultSet resultSet = pst.executeQuery();
             while (resultSet.next()) {
                 Content content=new Content();
@@ -130,5 +140,31 @@ public class AdvRepositoryImpl implements AdvRepository {
         }
 
         return contents;
+    }
+    public List<Advertisement> getAdvertisementByCompanyId(Long companyId){
+        Connection connection = dbConnection.getConnection();
+        List<Advertisement> advertisements=new ArrayList<>();
+        try {
+                String mysqlSelect = "select * from advertisement where company_id=? ;";
+            PreparedStatement pst = connection.prepareStatement(mysqlSelect);
+            pst.setLong(1, companyId);
+
+            ResultSet resultSet = pst.executeQuery();
+            while (resultSet.next()) {
+                Advertisement advertisement = new Advertisement();
+                advertisement.setAdvId(resultSet.getLong("adv_id"));
+                advertisement.setAdvName(resultSet.getString("adv_name"));
+                Date publisheddDate = resultSet.getDate("published_date");
+                advertisement.setPublishedDate(publisheddDate.toLocalDate());
+                advertisement.setCompanyId(resultSet.getLong("company_id"));
+                advertisements.add(advertisement);
+            }
+                return advertisements;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            dbConnection.closeConnection(connection);
+        }
+
     }
 }

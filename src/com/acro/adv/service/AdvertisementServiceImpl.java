@@ -102,7 +102,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
         return null;
     }
-    public AdvertisementResponse getAdvertisementById(AdvertisementRequest advertisementRequest) {
+    public AdvertisementResponse getAdvertisementDetails(AdvertisementRequest advertisementRequest) {
         if (advertisementRequest.getAdvId() != null && advertisementRequest.getAdvId()>0 && advertisementRequest.getCompanyId()!=null && advertisementRequest.getCompanyId() >0) {
             Advertisement advertisement = advRepository.getAdvertisementById(advertisementRequest.getAdvId(), advertisementRequest.getCompanyId());
             if(advertisement!=null) {
@@ -115,7 +115,37 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
         return null;
     }
+    public AdvertisementResponse getAdvertisementById(Long advId) {
+        if (advId != null && advId>0) {
+            Advertisement advertisement = advRepository.getAdvertisementById(advId,null);
+            if(advertisement!=null) {
+                System.out.println(" retrieved successfully "+ advertisement.getAdvId());
+                AdvertisementResponse advertisementResponse = createAdvertisementResponse(advertisement);
+                List<Content> contentByAdvertisementId = advRepository.getContentByAdvertisementId(advertisementResponse.getAdvId(), advertisementResponse.getCompanyId());
+                contentByAdvertisementId.forEach(c -> populateContentResponse(advertisementResponse,c));
+                return advertisementResponse;
+            }
+        }
+        return null;
+    }
+    public List<AdvertisementResponse> getAllAdvertisementByCompanyId(Long companyId) {
+        if (companyId != null && companyId > 0) {
+            List<Advertisement> advertisements = advRepository.getAdvertisementByCompanyId(companyId);
+            if (advertisements != null) {
+                List<AdvertisementResponse> advertisementResponses = new ArrayList<>();
+                advertisements.forEach(advertisement -> {
+                    AdvertisementResponse advertisementResponse = createAdvertisementResponse(advertisement);
+                    advertisementResponses.add(advertisementResponse);
 
+                    // List<Content> contentByAdvertisementId = advRepository.getContentByAdvertisementId(advertisementResponse.getCompanyId());
+                    // contentByAdvertisementId.forEach(c -> populateContentResponse(advertisementResponse,c));
+                });
+                return advertisementResponses;
+            }
+        }
+        return null;
+
+    }
 }
 
 
