@@ -15,20 +15,21 @@ public class AdvertisementController {
             return response;
 
         } else {
-            throw new RuntimeException("required fields are not passed");
+            throw new RuntimeException("Required fields are not passed");
 
         }
     }
-        public AdvertisementResponse getAdvertisementById(AdvertisementRequest advertisementRequest) throws Exception{
-            if(advertisementRequest!=null
-                    && advertisementRequest.getAdvId()!=null &&advertisementRequest.getAdvId()>0
-                && advertisementRequest.getCompanyId()!=null && advertisementRequest.getCompanyId()>0){
-                AdvertisementResponse response1= advertisementService.getAdvertisementById(advertisementRequest);
-                return response1;
-            }else {
-                throw new RuntimeException(" required fields are not passed");
-            }
-
+    public AdvertisementResponse getAdvertisementById(AdvertisementRequest advertisementRequest) throws Exception{
+        if(advertisementRequest!=null
+                && advertisementRequest.getAdvId()!=null &&advertisementRequest.getAdvId()>0
+            && advertisementRequest.getCompanyId()!=null && advertisementRequest.getCompanyId()>0){
+            AdvertisementResponse response1= advertisementService.getAdvertisementById(advertisementRequest);
+            return response1;
+        }else {
+            throw new RuntimeException(" required fields are not passed");
         }
+
+    }
+
 
 }
